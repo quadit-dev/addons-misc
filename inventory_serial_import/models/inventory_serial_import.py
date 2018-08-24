@@ -19,6 +19,8 @@ class stock(models.Model):
                 *Only csv files is allowed \
                 *The csv file must contain a row header namely Serial Number")
     file_name = fields.Char("file name")
+    code = fields.Selection(related='picking_id.picking_type_id.code',
+                            string='Type')
 
     def read_validate_csv(self, csv_dict_reader):
         """Read the rows and check that the number of items in header line
@@ -159,3 +161,15 @@ class stock(models.Model):
                 'stock.view_pack_operation_lot_form').id or False, 'form')],
             'target': 'new',
         }
+
+    @api.multi
+    def do_plus_mass(self):
+        for pack in self.pack_lot_ids:
+            pack.action_add_quantity(1)
+        return {'type': 'ir.actions.do_nothing'}
+
+    @api.multi
+    def do_minus_mass(self):
+        for pack in self.pack_lot_ids:
+            pack.action_add_quantity(-1)
+        return {'type': 'ir.actions.do_nothing'}

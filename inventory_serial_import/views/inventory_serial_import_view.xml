@@ -13,6 +13,13 @@
 					<button class='btn btn-primary oe_inline' style="margin-left:10px" name='input_file' type='object' string='Validate' />
 				</span>
 			</xpath>
+            <xpath expr="//form/group[2]" position="after">
+            	<field name="code" invisible="1"/>
+                <group col="4" attrs="{'invisible': [('code','!=', 'outgoing')]}">
+                    <button name="do_plus_mass" string="Select all" type="object" icon="fa-plus-square"/>
+                    <button name="do_minus_mass" string="Remove all" type="object" icon="fa-minus-square"/>
+                </group>
+            </xpath>
 		</field>
 	</record>
 </odoo>
